@@ -32,6 +32,8 @@ define(['./utils'], function(utils) {
             var selectedNode = this.selectedNodesById[id];
             selectedNodes.push(selectedNode);
         }
+        
+        return selectedNodes;
     };
 
     // returns a list of all nodes at 'best cost' - a feature to be used
