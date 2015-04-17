@@ -149,6 +149,10 @@ define([
         if (this.gridOptionsWrapper.getDatasource()) {
             this.setDatasource();
         }
+
+        if (typeof this.gridOptions.ready === 'function') {
+            this.gridOptions.ready();
+        }
     }
 
     Grid.prototype.createAndWireBeans = function ($scope, $compile, eGridDiv, useScrolls) {

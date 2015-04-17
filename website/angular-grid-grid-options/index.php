@@ -136,6 +136,11 @@ include '../documentation_header.php';
             <td>Set to true if data provided to the grid is already in node structure (this is for passing
                 already aggregated data to the grid).</td>
         </tr>
+        <tr>
+            <th>ready</th>
+            <td>Callback function that gets called after grid has initialised. Useful if you want to
+                work with the grid through it's API after it is ready.</td>
+        </tr>
     </table>
 
 </div>

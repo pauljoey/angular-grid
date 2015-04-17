@@ -11,6 +11,7 @@ define([], function() {
         return value === true || value === 'true';
     }
 
+    GridOptionsWrapper.prototype.getContext = function() { return this.gridOptions.context; };
     GridOptionsWrapper.prototype.isRowSelection = function() { return this.gridOptions.rowSelection === "single" || this.gridOptions.rowSelection === "multiple"; };
     GridOptionsWrapper.prototype.isRowSelectionMulti = function() { return this.gridOptions.rowSelection === 'multiple'; };
     GridOptionsWrapper.prototype.isVirtualPaging = function() { return isTrue(this.gridOptions.virtualPaging); };

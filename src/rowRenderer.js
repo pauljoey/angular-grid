@@ -572,36 +572,49 @@ define(["./constants","./svgFactory","./utils"], function(constants, SvgFactory,
         }
     };
 
+    RowRenderer.prototype.putCssClassesOntoCell = function(eGridCell, node, column) {
+        // these classes go to all cells
+        var classes = ['ag-cell', 'cell-col-'+column.index];
+        // special classes for node
+        if (node.group) {
+            if (node.footer) {
+                classes.push('ag-footer-cell'); // for footers to groups
+            } else {
+                classes.push('ag-group-cell'); // for headers
+            }
+        }
+        eGridCell.className = classes.join(' ');
+    };
+
+    // see if we need a padding box for indenting groups
+    RowRenderer.prototype.applyGroupingIndent = function(isFirstColumn, eCellWrapper, node) {
+        if (isFirstColumn && (node.parent)) {
+            var pixelsToIndent = 20 + (node.parent.level * 10);
+            eCellWrapper.style['padding-left'] = pixelsToIndent + 'px';
+        }
+    };
+
+    RowRenderer.prototype.addSelectionCheckboxIfNeeded = function(eCellWrapper, colDef, rowIndex, node) {
+        if (colDef.checkboxSelection) {
+            var eCheckbox = this.selectionRendererFactory.createSelectionCheckbox(node, rowIndex);
+            eCellWrapper.appendChild(eCheckbox);
+        }
+    };
+
     RowRenderer.prototype.createCell = function(isFirstColumn, column, value, node, rowIndex, $childScope) {
         var that = this;
         var eGridCell = document.createElement("div");
         eGridCell.setAttribute("col", column.index);
 
-        // set class, only include ag-group-cell if it's a group cell
-        var classes = ['ag-cell', 'cell-col-'+column.index];
-        if (node.group) {
-            if (node.footer) {
-                classes.push('ag-footer-cell');
-            } else {
-                classes.push('ag-group-cell');
-            }
-        }
-        eGridCell.className = classes.join(' ');
+        this.putCssClassesOntoCell(eGridCell, node, column);
 
         var eCellWrapper = document.createElement('span');
         eGridCell.appendChild(eCellWrapper);
 
-        // see if we need a padding box
-        if (isFirstColumn && (node.parent)) {
-            var pixelsToIndent = 20 + (node.parent.level * 10);
-            eCellWrapper.style['padding-left'] = pixelsToIndent + 'px';
-        }
+        this.applyGroupingIndent(isFirstColumn, eCellWrapper, node);
 
         var colDef = column.colDef;
-        if (colDef.checkboxSelection) {
-            var eCheckbox = this.selectionRendererFactory.createSelectionCheckbox(node, rowIndex);
-            eCellWrapper.appendChild(eCheckbox);
-        }
+        this.addSelectionCheckboxIfNeeded(eCellWrapper, colDef, rowIndex, node);
 
         var eSpanWithValue = document.createElement("span");
         eCellWrapper.appendChild(eSpanWithValue);
