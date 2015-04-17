@@ -224,7 +224,7 @@ define(['./utils'], function(utils) {
         }
 
         // remove the row
-        this.selectedNodesById[node.id] = undefined;
+        delete this.selectedNodesById[node.id];
     };
 
     // private
